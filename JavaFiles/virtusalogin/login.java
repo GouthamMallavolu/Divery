@@ -1,0 +1,62 @@
+package virtusalogin;
+
+import java.io.IOException;
+import java.sql.*;
+
+/**
+ * Servlet implementation class login
+ */
+public class login extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public login() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+	@SuppressWarnings({ "deprecation" })
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+     //response.getWriter().println("welcome "+request.getParameter("name")+" to our page");
+		Connection conn=null;
+		String databaseName="localhost";
+		 String url = "jdbc:mysql://localhost:3306/" +databaseName;
+	
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			conn = DriverManager.getConnection(url, "root", "Mysqlroot@33");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Statement st = null;
+		try {
+			st = conn.createStatement();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String name=request.getParameter("name");
+		String pass=request.getParameter("pass");
+		ResultSet rs = null;
+		try {
+			rs = st.executeQuery("select first_name, last_name from sakila.actor where first_name='"+name+"'"+"and last_name='"+pass+"'");
+			if(rs.next()) {
+					request.setAttribute("name", name);;
+					RequestDispatcher rd = request.getRequestDispatcher("inv_dsb.jsp");
+					rd.forward(request,response);
+			}
+			else response.sendRedirect("invalid.jsp");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+
+}
