@@ -16,7 +16,7 @@ The project uses **frontend + local backend** integration, connecting to a **loc
 
 ---
 
-### 🏭 Warehouse Dashboard
+### Warehouse Dashboard
 - Add new items to the warehouse stock.
 - Update stock quantities.
 - View remaining inventory in real-time.
